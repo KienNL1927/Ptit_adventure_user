@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/image_checkpoint"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_checkpoint"
+            android:contentDescription="Checkpoint icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_checkpoint_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tên Checkpoint"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@id/image_checkpoint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_checkpoint_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Mô tả ngắn về checkpoint này"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@id/image_checkpoint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_checkpoint_name"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_checkpoint_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa hoàn thành"
+            android:layout_marginTop="8dp"
+            app:chipBackgroundColor="@color/design_default_color_secondary"
+            app:layout_constraintStart_toStartOf="@id/text_checkpoint_description"
+            app:layout_constraintTop_toBottomOf="@id/text_checkpoint_description"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
