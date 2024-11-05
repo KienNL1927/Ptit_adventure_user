@@ -63,7 +63,6 @@
 
                     <TextView
                         android:layout_width="0dp"
-
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Cấp độ:"/>
@@ -153,6 +152,29 @@
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- New buttons for logging out and changing password -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_change_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Thay đổi mật khẩu"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@id/card_achievements"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_logout"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@id/card_achievements"
+            app:layout_constraintStart_toEndOf="@id/button_change_password"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

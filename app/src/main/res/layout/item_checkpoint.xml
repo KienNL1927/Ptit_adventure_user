@@ -14,47 +14,65 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/image_checkpoint"
+            android:id="@+id/image_location"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/default_avatar"
-            android:contentDescription="Checkpoint icon"
+            android:src="@drawable/location"
+            android:contentDescription="Location icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
-            android:id="@+id/text_checkpoint_name"
+            android:id="@+id/text_location_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tên Checkpoint"
+            android:text="Tên Địa điểm"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/image_checkpoint"
+            app:layout_constraintStart_toEndOf="@id/image_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/text_checkpoint_description"
+            android:id="@+id/text_location_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Mô tả ngắn về checkpoint này"
+            android:text="Số tầng: 5"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toEndOf="@id/image_checkpoint"
+            app:layout_constraintStart_toEndOf="@id/image_location"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_checkpoint_name"/>
+            app:layout_constraintTop_toBottomOf="@id/text_location_name"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_subtasks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@id/text_location_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_location_description"/>
+
+        <TextView
+            android:id="@+id/text_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/5 subtasks completed"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/progress_subtasks"
+            app:layout_constraintTop_toBottomOf="@id/progress_subtasks"/>
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_checkpoint_status"
+            android:id="@+id/chip_location_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chưa hoàn thành"
             android:layout_marginTop="8dp"
             app:chipBackgroundColor="@color/design_default_color_secondary"
-            app:layout_constraintStart_toStartOf="@id/text_checkpoint_description"
-            app:layout_constraintTop_toBottomOf="@id/text_checkpoint_description"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_progress"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

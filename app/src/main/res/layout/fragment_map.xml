@@ -31,7 +31,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:background="@android:color/darker_gray">
 
                 <ImageView
@@ -41,23 +41,7 @@
                     android:scaleType="centerCrop"/>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/checkpoint_ptit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PTIT"
-                        android:padding="8dp"/>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/checkpoint_library"
+                    android:id="@+id/checkpoint_a1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
@@ -68,13 +52,29 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Thư viện"
+                        android:text="A1"
                         android:padding="8dp"/>
 
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/checkpoint_canteen"
+                    android:id="@+id/checkpoint_a2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="A2"
+                        android:padding="8dp"/>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/checkpoint_a3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
@@ -85,10 +85,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Căng tin"
+                        android:text="A3"
                         android:padding="8dp"/>
-
-
 
                 </com.google.android.material.card.MaterialCardView>
 
