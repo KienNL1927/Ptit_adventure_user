@@ -6,6 +6,8 @@ public interface IUserDAO {
     User getUserByUsername(String username);
     void updateUser(User user);
     void changePassword(String username, String newPassword);
+    boolean checkLogin(String username, String password);
+    int getIDStudent(String email);
 }
 
 

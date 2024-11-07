@@ -1,3 +1,4 @@
+/*
 package com.example.ptitadventure.adapter;
 
 import android.view.LayoutInflater;
@@ -7,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ptitadventure.R;
-import com.example.ptitadventure.model.Subtask;
+
 import java.util.List;
 
 public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskViewHolder> {
@@ -67,4 +68,4 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
             textSubtaskStatus.setText(subtask.isCompleted() ? "Hoàn thành" : "Chưa hoàn thành");
         }
     }
-}
+}*/

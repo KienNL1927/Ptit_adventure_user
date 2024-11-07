@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptitadventure.R;
-import com.example.ptitadventure.adapter.LocationAdapter;
+import com.example.ptitadventure.adapter.QuestAdapter;
 import com.example.ptitadventure.model.Location;
+import com.example.ptitadventure.model.Quest;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -26,9 +27,14 @@ public class MapFragment extends Fragment {
     private Button buttonScanNfc;
     private RecyclerView recyclerViewLocations;
 
+    private com.example.ptitadventure.dao.QuestDAO questDAO;
+    private int studentID;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+        questDAO = new com.example.ptitadventure.dao.QuestDAO(getContext());
+        studentID = getActivity().getIntent().getIntExtra("studentID", 1);
 
         checkpointA1 = view.findViewById(R.id.checkpoint_a1);
         checkpointA2 = view.findViewById(R.id.checkpoint_a2);
@@ -60,11 +66,12 @@ public class MapFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        List<Location> locations = generateLocations();
-        LocationAdapter adapter = new LocationAdapter(locations);
+        List<Quest> list;
+        list = questDAO.getMainQuest();
+        QuestAdapter adapter = new QuestAdapter(list, studentID, questDAO);
         adapter.setOnLocationClickListener(location -> {
-            Intent intent = new Intent(getActivity(), SubtaskActivity.class);
-            startActivity(intent);
+           /* Intent intent = new Intent(getActivity(), SubtaskActivity.class);
+            startActivity(intent);*/
         });
         recyclerViewLocations.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewLocations.setAdapter(adapter);
@@ -84,14 +91,4 @@ public class MapFragment extends Fragment {
         startActivity(intent);
     }
 
-    private List<Location> generateLocations() {
-        List<Location> locations = new ArrayList<>();
-        locations.add(new Location("A1", 1, 3));
-        locations.add(new Location("A1", 2, 4));
-        locations.add(new Location("A1", 3, 2));
-        locations.add(new Location("A1", 4, 1));
-        locations.add(new Location("A1", 5, 5));
-        locations.get(0).setCompletedSubtasks(3);
-        return locations;
-    }
 }

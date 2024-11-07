@@ -1,24 +1,26 @@
 package com.example.ptitadventure.model;
 
 public class Location {
+
+    private int id;
     private String name;
     private int floors;
-    private int completedSubtasks;
-    private int totalSubtasks;
+    private String building;
 
-    public Location(String name, int floors, int totalSubtasks) {
+
+    public Location(int id, String name, int floors, String building) {
+        this.id = id;
         this.name = name;
         this.floors = floors;
-        this.totalSubtasks = totalSubtasks;
-        this.completedSubtasks = 0;
+        this.building = building;
     }
 
-    // Getters and setters
+    public int getId() {
+        return id;
+    }
 
-    public void completeSubtask() {
-        if (completedSubtasks < totalSubtasks) {
-            completedSubtasks++;
-        }
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,23 +39,11 @@ public class Location {
         this.floors = floors;
     }
 
-    public int getCompletedSubtasks() {
-        return completedSubtasks;
+    public String getBuilding() {
+        return building;
     }
 
-    public void setCompletedSubtasks(int completedSubtasks) {
-        this.completedSubtasks = completedSubtasks;
-    }
-
-    public int getTotalSubtasks() {
-        return totalSubtasks;
-    }
-
-    public void setTotalSubtasks(int totalSubtasks) {
-        this.totalSubtasks = totalSubtasks;
-    }
-
-    public boolean isCompleted() {
-        return completedSubtasks == totalSubtasks;
+    public void setBuilding(String building) {
+        this.building = building;
     }
 }

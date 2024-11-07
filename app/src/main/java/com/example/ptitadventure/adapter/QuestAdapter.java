@@ -10,24 +10,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptitadventure.R;
-import com.example.ptitadventure.model.CheckPoint;
-import com.example.ptitadventure.model.Location;
+import com.example.ptitadventure.dao.QuestDAO;
+import com.example.ptitadventure.model.Quest;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.List;
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
+public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.LocationViewHolder> {
 
-    private List<Location> locations;
+    private List<Quest> quests;
     private OnLocationClickListener listener;
 
+    private QuestDAO questDAO;
+
+    private int studentID;
+
     public interface OnLocationClickListener {
-        void onLocationClick(Location location);
+        void onLocationClick(Quest location);
     }
 
-    public LocationAdapter(List<Location> locations) {
-        this.locations = locations;
+    public QuestAdapter(List<Quest> quests, int id, QuestDAO questDAO) {
+        this.quests = quests;
+        this.studentID = id;
+        this.questDAO = questDAO;
     }
 
     public void setOnLocationClickListener(OnLocationClickListener listener) {
@@ -43,13 +49,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
     @Override
     public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
-        Location location = locations.get(position);
-        holder.bind(location);
+        Quest quest = quests.get(position);
+        holder.bind(quest, studentID);
     }
 
     @Override
     public int getItemCount() {
-        return locations.size();
+        return quests.size();
     }
 
     class LocationViewHolder extends RecyclerView.ViewHolder {
@@ -72,17 +78,17 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
-                    listener.onLocationClick(locations.get(position));
+                    listener.onLocationClick(quests.get(position));
                 }
             });
         }
 
-        void bind(Location location) {
-            locationName.setText(location.getName());
-            locationDescription.setText("Tầng: " + location.getFloors());
+        void bind(Quest quest, int studentID) {
+            locationName.setText(quest.getName());
+            locationDescription.setText("Tầng: 5");
 
-            int completedSubtasks = location.getCompletedSubtasks();
-            int totalSubtasks = location.getTotalSubtasks();
+            int completedSubtasks = questDAO.getQuestCompleted(quest.getId(), studentID);
+            int totalSubtasks = questDAO.getTotalQuest(quest.getId());
 
             progressSubtasks.setMax(totalSubtasks);
             progressSubtasks.setProgress(completedSubtasks);

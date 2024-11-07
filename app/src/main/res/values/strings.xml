@@ -2,4 +2,8 @@
     <string name="app_name">Ptit Adventure</string>
     <string name="search">Tìm kiếm</string>
     <string name="settings">Cài đặt</string>
+    <string name="congratulations">Chúc mừng!</string>
+    <string name="quest_completed">Bạn đã hoàn thành nhiệm vụ:</string>
+    <string name="points_earned">Bạn nhận được %d điểm</string>
+    <string name="ok">OK</string>
 </resources>

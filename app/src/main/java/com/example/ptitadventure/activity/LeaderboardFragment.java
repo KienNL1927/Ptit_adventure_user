@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptitadventure.R;
-import com.example.ptitadventure.model.GameProgress;
 import com.example.ptitadventure.model.Student;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LeaderboardFragment extends Fragment {
 
-    private CircleImageView imageFirstPlace, imageSecondPlace, imageThirdPlace;
+    /*private CircleImageView imageFirstPlace, imageSecondPlace, imageThirdPlace;
     private TextView textFirstPlaceName, textSecondPlaceName, textThirdPlaceName;
     private TextView textFirstPlaceScore, textSecondPlaceScore, textThirdPlaceScore;
     private RecyclerView recyclerViewLeaderboard;
@@ -61,6 +60,8 @@ public class LeaderboardFragment extends Fragment {
 
     private void setupRecyclerView() {
         leaderboardList = new ArrayList<>();
+        leaderboardList.add(new GameProgress(new Student("khanh", "123", "Nguyen Lam Kien", "t@gmail.com"
+        , "0123456789", "1", "123", "1", 1, 123, 123, 123), null, 800, 1));
         leaderboardAdapter = new LeaderboardAdapter(leaderboardList);
         recyclerViewLeaderboard.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewLeaderboard.setAdapter(leaderboardAdapter);
@@ -161,5 +162,5 @@ public class LeaderboardFragment extends Fragment {
                 return (totalScore / 100) + 1;
             }
         }
-    }
+    }*/
 }

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,8 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptitadventure.R;
-import com.example.ptitadventure.model.CheckPoint;
-import com.example.ptitadventure.model.Subtask;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
@@ -26,7 +23,7 @@ import java.util.List;
 
 public class ChecklistFragment extends Fragment {
 
-    private TabLayout tabLayout;
+   /* private TabLayout tabLayout;
     private RecyclerView recyclerViewCheckpoints;
     private CheckpointAdapter checkpointAdapter;
     private List<CheckPoint> incompleteCheckpoints;
@@ -43,14 +40,13 @@ public class ChecklistFragment extends Fragment {
         incompleteCheckpoints = new ArrayList<>();
         completedCheckpoints = new ArrayList<>();
 
-        Subtask subtask1 = new Subtask("ST1", "Tìm cửa", true, 2);
-        List<Subtask> subtasks = new ArrayList<>();
+        Subtask subtask1 = new Subtask("ST1", "Tìm cửa", true, 5);
+        List<Subtask> subtasks = new ArrayList<>(), subtasks2 = new ArrayList<>();
         subtasks.add(subtask1);
+        subtasks2.add(new Subtask("ST2", "Tìm cửa", false, 4));
         // Initialize with some dummy data
-        incompleteCheckpoints.add(new CheckPoint("CP1", "Tòa nhà A1", "Khám phá tòa nhà A1", 5, subtasks, null, 0, false));
-        incompleteCheckpoints.add(new CheckPoint("CP2", "Tòa nhà A2", "Thử thách toán học", 4, subtasks, null, 0, false));
-        completedCheckpoints.add(new CheckPoint("CP3", "Thư viện", "Tìm sách về CNTT", 1, subtasks, null, 0, false));
-        completedCheckpoints.add(new CheckPoint("CP4", "Sân vận động", "Hoạt động thể thao", 1, subtasks, null, 0, false));
+        incompleteCheckpoints.add(new CheckPoint("CP1", "Tòa nhà A1", "Khám phá tòa nhà A1", 5, subtasks2, null, 0, false));
+        completedCheckpoints.add(new CheckPoint("CP2", "Tòa nhà A2", "Thử thách toán học", 4, subtasks, null, 0, true));
 
         checkpointAdapter = new CheckpointAdapter(incompleteCheckpoints);
         recyclerViewCheckpoints.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -146,5 +142,5 @@ public class ChecklistFragment extends Fragment {
                 }
             }
         }
-    }
+    }*/
 }

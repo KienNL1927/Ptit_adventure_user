@@ -1,15 +1,14 @@
+/*
 package com.example.ptitadventure.util;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.ptitadventure.R;
-import com.example.ptitadventure.model.Subtask;
 
 public class SubtaskInstructionsDialog extends Dialog {
 
@@ -48,4 +47,4 @@ public class SubtaskInstructionsDialog extends Dialog {
     public interface OnNfcTagScannedListener {
         void onNfcTagScanned();
     }
-}
+}*/
