@@ -1,27 +1,18 @@
 package com.example.ptitadventure.model;
 
 public class User {
-    protected String username;
     protected String password;
     protected String fullName;
     protected String email;
     protected String phoneNumber;
 
-    public User(String username, String password, String fullName, String email, String phoneNumber) {
-        this.username = username;
+    public User( String password, String fullName, String email, String phoneNumber) {
         this.password = password;
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;

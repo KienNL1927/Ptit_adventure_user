@@ -13,15 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptitadventure.R;
 import com.example.ptitadventure.adapter.QuestAdapter;
-import com.example.ptitadventure.model.Location;
+import com.example.ptitadventure.api.ApiQuestService;
+import com.example.ptitadventure.api.Client;
 import com.example.ptitadventure.model.Quest;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+
 public class MapFragment extends Fragment {
+
 
     private MaterialCardView checkpointA1, checkpointA2, checkpointA3;
     private Button buttonScanNfc;
@@ -33,9 +37,10 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        questDAO = new com.example.ptitadventure.dao.QuestDAO(getContext());
+
         studentID = getActivity().getIntent().getIntExtra("studentID", 1);
 
+        questDAO = new com.example.ptitadventure.dao.QuestDAO(Client.getClient().create(ApiQuestService.class));
         checkpointA1 = view.findViewById(R.id.checkpoint_a1);
         checkpointA2 = view.findViewById(R.id.checkpoint_a2);
         checkpointA3 = view.findViewById(R.id.checkpoint_a3);
@@ -43,8 +48,9 @@ public class MapFragment extends Fragment {
         recyclerViewLocations = view.findViewById(R.id.recycler_view_locations);
 
         setupCheckpoints();
-        setupNfcButton();
-        setupRecyclerView();
+        // setupNfcButton();
+        //setupRecyclerView();
+        callAPIGetMainQuest();
 
         return view;
     }
@@ -65,14 +71,34 @@ public class MapFragment extends Fragment {
         });
     }
 
-    private void setupRecyclerView() {
-        List<Quest> list;
-        list = questDAO.getMainQuest();
-        QuestAdapter adapter = new QuestAdapter(list, studentID, questDAO);
-        adapter.setOnLocationClickListener(location -> {
-           /* Intent intent = new Intent(getActivity(), SubtaskActivity.class);
-            startActivity(intent);*/
+    private void callAPIGetMainQuest() {
+       questDAO.getMainQuest(new Callback<List<Quest>>() {
+           @Override
+           public void onResponse(Call<List<Quest>> call, retrofit2.Response<List<Quest>> response) {
+               List<Quest> quests = response.body();
+               assert quests != null;
+               setupRecyclerView(quests);
+           }
+
+           @Override
+           public void onFailure(Call<List<Quest>> call, Throwable t) {
+               CustomSnackbar.make(getView(),
+                       "Có lỗi với server",
+                       Snackbar.LENGTH_SHORT,
+                       R.drawable.ic_error);
+           }
         });
+    }
+
+    private void setupRecyclerView(List<Quest> quests) {
+        QuestAdapter adapter = new QuestAdapter(quests, studentID, questDAO);
+         adapter.setOnLocationClickListener(location -> {
+                Intent intent = new Intent(getActivity(), SubtaskActivity.class);
+                intent.putExtra("main_quest", location.getId());
+                intent.putExtra("main_quest_name", location.getName());
+                intent.putExtra("student_id", studentID);
+                startActivity(intent);
+           });
         recyclerViewLocations.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewLocations.setAdapter(adapter);
     }
@@ -83,12 +109,7 @@ public class MapFragment extends Fragment {
                     "This location is further for development",
                     Snackbar.LENGTH_SHORT,
                     R.drawable.ic_info);
-            return;
         }
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("location", location);
-        intent.putExtra("floors", floors);
-        startActivity(intent);
     }
 
 }

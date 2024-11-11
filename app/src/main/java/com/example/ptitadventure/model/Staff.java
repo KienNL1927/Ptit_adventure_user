@@ -6,7 +6,7 @@ public class Staff extends User {
     private String staffCode;
 
     public Staff(String username, String password, String fullName, String email, String phoneNumber, String teacherId, String faculty, String staffCode) {
-        super(username, password, fullName, email, phoneNumber);
+        super(password, fullName, email, phoneNumber);
         this.teacherId = teacherId;
         this.faculty = faculty;
         this.staffCode = staffCode;

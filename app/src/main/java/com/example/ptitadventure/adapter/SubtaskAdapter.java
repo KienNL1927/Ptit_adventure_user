@@ -1,4 +1,3 @@
-/*
 package com.example.ptitadventure.adapter;
 
 import android.view.LayoutInflater;
@@ -8,20 +7,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ptitadventure.R;
+import com.example.ptitadventure.activity.CustomSnackbar;
+import com.example.ptitadventure.api.ApiQuestService;
+import com.example.ptitadventure.dao.QuestDAO;
+import com.example.ptitadventure.model.Quest;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskViewHolder> {
 
-    private List<Subtask> subtasks;
+    private List<Quest> subtasks;
     private OnSubtaskClickListener listener;
+    private QuestDAO questDAO;
+    private int studentID;
 
-    public SubtaskAdapter(List<Subtask> subtasks) {
+    public SubtaskAdapter(List<Quest> subtasks, QuestDAO apiService, int studentID) {
         this.subtasks = subtasks;
+        this.studentID = studentID;
+        this.questDAO = apiService;
     }
 
     public interface OnSubtaskClickListener {
-        void onSubtaskClick(Subtask subtask);
+        void onSubtaskClick(Quest subtask);
     }
 
     public void setOnSubtaskClickListener(OnSubtaskClickListener listener) {
@@ -37,7 +49,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
 
     @Override
     public void onBindViewHolder(@NonNull SubtaskViewHolder holder, int position) {
-        Subtask subtask = subtasks.get(position);
+        Quest subtask = subtasks.get(position);
         holder.bind(subtask);
     }
 
@@ -63,9 +75,37 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.SubtaskV
             });
         }
 
-        public void bind(Subtask subtask) {
-            textSubtaskName.setText(subtask.getDescription());
-            textSubtaskStatus.setText(subtask.isCompleted() ? "Hoàn thành" : "Chưa hoàn thành");
+        public void bind(Quest subtask) {
+            textSubtaskName.setText(subtask.getName());
+            questDAO.getQuestCompleted(studentID, subtask.getId(), new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if (response.isSuccessful()) {
+                        updateUI(response.body());
+                    } else {
+                        CustomSnackbar.make(itemView,
+                                "Failed to get subtask completion status",
+                                Snackbar.LENGTH_SHORT,
+                                R.drawable.ic_error);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    CustomSnackbar.make(itemView,
+                            "Failed to get subtask completion status",
+                            Snackbar.LENGTH_SHORT,
+                            R.drawable.ic_error);
+                }
+            });
+        }
+
+        void updateUI(int questCompleted) {
+            if (questCompleted != 0) {
+                textSubtaskStatus.setText("Hoàn thành");
+            } else {
+                textSubtaskStatus.setText("Chưa hoàn thành");
+            }
         }
     }
-}*/
+}

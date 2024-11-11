@@ -8,9 +8,9 @@ public class StudentQuest {
 
     private int score;
 
-    private List<Student> students;
+    private Student students;
 
-    private List<Quest> quests;
+    private Quest quests;
 
     public int getId() {
         return id;
@@ -28,23 +28,23 @@ public class StudentQuest {
         this.score = score;
     }
 
-    public List<Student> getStudents() {
+    public Student getStudents() {
         return students;
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(Student students) {
         this.students = students;
     }
 
-    public List<Quest> getQuests() {
+    public Quest getQuests() {
         return quests;
     }
 
-    public void setQuests(List<Quest> quests) {
+    public void setQuests(Quest quests) {
         this.quests = quests;
     }
 
-    public StudentQuest(int id, int score, List<Student> students, List<Quest> quests) {
+    public StudentQuest(int id, int score, Student students, Quest quests) {
         this.id = id;
         this.score = score;
         this.students = students;

@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.ptitadventure.activity.MapFragment"
+        android:name="com.example.ptitadventure.activity.ProfileFragment"
         android:label="Hồ sơ" />
 
 </navigation>

@@ -13,31 +13,42 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptitadventure.R;
+import com.example.ptitadventure.api.ApiStudentQuestService;
+import com.example.ptitadventure.api.Client;
+import com.example.ptitadventure.dao.StudentQuestRepo;
 import com.example.ptitadventure.model.Student;
+import com.example.ptitadventure.model.StudentQuest;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LeaderboardFragment extends Fragment {
 
-    /*private CircleImageView imageFirstPlace, imageSecondPlace, imageThirdPlace;
+    private CircleImageView imageFirstPlace, imageSecondPlace, imageThirdPlace;
     private TextView textFirstPlaceName, textSecondPlaceName, textThirdPlaceName;
     private TextView textFirstPlaceScore, textSecondPlaceScore, textThirdPlaceScore;
     private RecyclerView recyclerViewLeaderboard;
     private LeaderboardAdapter leaderboardAdapter;
-    private List<GameProgress> leaderboardList;
+    private List<StudentQuest> leaderboardList;
+
+    private StudentQuestRepo studentQuestRepo;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
+        studentQuestRepo = new StudentQuestRepo(Client.getClient().create(ApiStudentQuestService.class));
 
         initViews(view);
         setupRecyclerView();
-        loadLeaderboardData();
+        leaderBoardDataUpdate();
 
         return view;
     }
@@ -58,21 +69,44 @@ public class LeaderboardFragment extends Fragment {
         recyclerViewLeaderboard = view.findViewById(R.id.recycler_view_leaderboard);
     }
 
+    private void leaderBoardDataUpdate() {
+        studentQuestRepo.getDataLeaderboard(new Callback<List<StudentQuest>>() {
+            @Override
+            public void onResponse(Call<List<StudentQuest>> call, Response<List<StudentQuest>> response) {
+                if (response.isSuccessful()) {
+                    List<StudentQuest> studentQuests = response.body();
+                    loadLeaderboardData(studentQuests);
+                } else {
+                    CustomSnackbar.make(getView(),
+                            "Không thể tải dữ liệu bảng xếp hạng",
+                            Snackbar.LENGTH_SHORT,
+                            R.drawable.ic_error);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StudentQuest>> call, Throwable t) {
+                CustomSnackbar.make(getView(),
+                        "Không thể tải dữ liệu bảng xếp hạng",
+                        Snackbar.LENGTH_SHORT,
+                        R.drawable.ic_error);
+            }
+        });
+    }
+
     private void setupRecyclerView() {
         leaderboardList = new ArrayList<>();
-        leaderboardList.add(new GameProgress(new Student("khanh", "123", "Nguyen Lam Kien", "t@gmail.com"
-        , "0123456789", "1", "123", "1", 1, 123, 123, 123), null, 800, 1));
         leaderboardAdapter = new LeaderboardAdapter(leaderboardList);
         recyclerViewLeaderboard.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewLeaderboard.setAdapter(leaderboardAdapter);
     }
 
-    private void loadLeaderboardData() {
+    private void loadLeaderboardData(List<StudentQuest> studentQuests) {
         // In a real app, you would fetch this data from a database or API
-        List<GameProgress> allProgress = getDummyGameProgressList();
+        List<StudentQuest> allProgress = studentQuests;
 
         // Sort the list by total score in descending order
-        Collections.sort(allProgress, (gp1, gp2) -> Integer.compare(gp2.getTotalScore(), gp1.getTotalScore()));
+        Collections.sort(allProgress, (gp1, gp2) -> Integer.compare(gp2.getScore(), gp1.getScore()));
 
         // Update top 3 players
         if (allProgress.size() > 0) {
@@ -92,25 +126,18 @@ public class LeaderboardFragment extends Fragment {
         }
     }
 
-    private void updateTopPlayer(TextView nameView, TextView scoreView, CircleImageView imageView, GameProgress progress) {
-        nameView.setText(progress.getStudent().getFullName());
-        scoreView.setText(progress.getTotalScore() + " pts");
+    private void updateTopPlayer(TextView nameView, TextView scoreView, CircleImageView imageView, StudentQuest progress) {
+        nameView.setText(progress.getStudents().getFullName());
+        scoreView.setText(progress.getScore() + " pts");
         // In a real app, you would load the student's avatar here
         // imageView.setImageResource(R.drawable.default_avatar);
     }
 
-    private List<GameProgress> getDummyGameProgressList() {
-        List<GameProgress> progressList = new ArrayList<>();
-        progressList.add(new GameProgress(new Student("khanh", "123", "Bui Duy Khanh", "khanh@e.com", "0123456789", "1",
-                "123", "1", 1, 123, 123, 123), null, 1000, 1));
-        return progressList;
-    }
-
     private static class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder> {
 
-        private List<GameProgress> leaderboardList;
+        private List<StudentQuest> leaderboardList;
 
-        public LeaderboardAdapter(List<GameProgress> leaderboardList) {
+        public LeaderboardAdapter(List<StudentQuest> leaderboardList) {
             this.leaderboardList = leaderboardList;
         }
 
@@ -123,8 +150,8 @@ public class LeaderboardFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
-            GameProgress progress = leaderboardList.get(position);
-            holder.bind(progress, position + 4); // +4 because top 3 are displayed separately
+            StudentQuest progress = leaderboardList.get(position);
+            holder.bind(progress, position + 4);
         }
 
         @Override
@@ -148,19 +175,18 @@ public class LeaderboardFragment extends Fragment {
                 textUserRank = itemView.findViewById(R.id.text_user_rank);
             }
 
-            public void bind(GameProgress progress, int rank) {
-                textUserName.setText(progress.getStudent().getFullName());
-                textUserLevel.setText("Cấp độ: " + calculateLevel(progress.getTotalScore()));
-                textUserPoints.setText(progress.getTotalScore() + " điểm");
+            public void bind(StudentQuest progress, int rank) {
+                textUserName.setText(progress.getStudents().getFullName());
+                textUserLevel.setText("Cấp độ: " + calculateLevel(progress.getScore()));
+                textUserPoints.setText(progress.getScore() + " điểm");
                 textUserRank.setText("#" + rank);
                 // In a real app, you would load the student's avatar here
                 // imageUserAvatar.setImageResource(R.drawable.default_avatar);
             }
 
             private int calculateLevel(int totalScore) {
-                // This is a simple level calculation. Adjust as needed.
                 return (totalScore / 100) + 1;
             }
         }
-    }*/
+    }
 }

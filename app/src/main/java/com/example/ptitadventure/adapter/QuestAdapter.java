@@ -10,12 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ptitadventure.R;
+import com.example.ptitadventure.activity.CustomSnackbar;
 import com.example.ptitadventure.dao.QuestDAO;
 import com.example.ptitadventure.model.Quest;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+
+import retrofit2.Call;
 
 public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.LocationViewHolder> {
 
@@ -30,14 +34,19 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.LocationView
         void onLocationClick(Quest location);
     }
 
-    public QuestAdapter(List<Quest> quests, int id, QuestDAO questDAO) {
+    public QuestAdapter(List<Quest> quests, int id, QuestDAO apiService) {
         this.quests = quests;
         this.studentID = id;
-        this.questDAO = questDAO;
+        questDAO = apiService;
     }
 
     public void setOnLocationClickListener(OnLocationClickListener listener) {
         this.listener = listener;
+    }
+
+    public void updateQuests(List<Quest> quests) {
+        this.quests = quests;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -87,9 +96,52 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.LocationView
             locationName.setText(quest.getName());
             locationDescription.setText("Tầng: 5");
 
-            int completedSubtasks = questDAO.getQuestCompleted(quest.getId(), studentID);
-            int totalSubtasks = questDAO.getTotalQuest(quest.getId());
+            questDAO.getQuestCompleted(studentID, quest.getId(), new retrofit2.Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
+                    if (response.isSuccessful()) {
+                        int questCompleted = response.body();
+                        questDAO.getTotalQuest(quest.getId(), new retrofit2.Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
+                                if (response.isSuccessful()) {
+                                    int totalSubtasks = response.body();
+                                    updateUI(questCompleted, totalSubtasks);
+                                } else {
+                                    CustomSnackbar.make(itemView,
+                                            "Failed to get quest completion status",
+                                            Snackbar.LENGTH_SHORT,
+                                            R.drawable.ic_error);
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+                                CustomSnackbar.make(itemView,
+                                        "Failed to get quest completion status",
+                                        Snackbar.LENGTH_SHORT,
+                                        R.drawable.ic_error);
+                            }
+                        });
 
+                    } else {
+                        CustomSnackbar.make(itemView,
+                                "Failed to get quest completion status",
+                                Snackbar.LENGTH_SHORT,
+                                R.drawable.ic_error);
+                    }
+                }
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    CustomSnackbar.make(itemView,
+                            "Failed to get quest completion status",
+                            Snackbar.LENGTH_SHORT,
+                            R.drawable.ic_error);
+                }
+            });
+
+        }
+
+        void updateUI(int completedSubtasks, int totalSubtasks) {
             progressSubtasks.setMax(totalSubtasks);
             progressSubtasks.setProgress(completedSubtasks);
 
