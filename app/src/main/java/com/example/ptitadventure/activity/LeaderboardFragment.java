@@ -106,7 +106,7 @@ public class LeaderboardFragment extends Fragment {
         List<StudentQuest> allProgress = studentQuests;
 
         // Sort the list by total score in descending order
-        Collections.sort(allProgress, (gp1, gp2) -> Integer.compare(gp2.getScore(), gp1.getScore()));
+        Collections.sort(allProgress, (gp1, gp2) -> Integer.compare((int) gp2.getScore(), (int) gp1.getScore()));
 
         // Update top 3 players
         if (allProgress.size() > 0) {

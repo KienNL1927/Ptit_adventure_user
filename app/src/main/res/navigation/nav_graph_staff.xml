@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_statistic">
+
+    <!-- Statistic Fragment -->
+    <fragment
+        android:id="@+id/navigation_statistic"
+        android:name="com.example.ptitadventure.activity.StudentStatisticsFragment"
+        android:label="Thống kê" />
+
+    <!-- List Student Fragment -->
+    <fragment
+        android:id="@+id/navigation_list_student"
+        android:name="com.example.ptitadventure.activity.ListStudentFragment"
+        android:label="Danh sách sinh viên">
+
+        <!-- Action to Profile Fragment -->
+        <action
+            android:id="@+id/action_list_student_to_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+
+    <!-- Leaderboard Fragment -->
+    <fragment
+        android:id="@+id/navigation_leaderboard"
+        android:name="com.example.ptitadventure.activity.LeaderboardFragment"
+        android:label="Xếp hạng" />
+
+    <!-- Staff Profile Fragment -->
+    <fragment
+        android:id="@+id/navigation_profile_staff"
+        android:name="com.example.ptitadventure.activity.StaffProfileFragment"
+        android:label="Hồ sơ nhân viên" />
+
+    <!-- Profile Fragment -->
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.ptitadventure.activity.ProfileFragment"
+        android:layout="@layout/fragment_profile">
+        <argument
+            android:name="studentId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="role"
+            app:argType="string"
+            android:defaultValue="default" />
+    </fragment>
+
+</navigation>

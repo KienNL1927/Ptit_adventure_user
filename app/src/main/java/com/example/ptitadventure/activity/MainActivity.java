@@ -1,5 +1,7 @@
 package com.example.ptitadventure.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -17,22 +19,39 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        String role = getIntent().getStringExtra("role");
+        if (role.equals("student")) {
+            setContentView(R.layout.activity_main);
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.nav_host_fragment_student);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);
-
-        if (navHostFragment != null) {
-            navController = navHostFragment.getNavController();
-
-            NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            if (navHostFragment != null) {
+                navController = navHostFragment.getNavController();
+                NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            } else {
+                throw new IllegalStateException("NavHostFragment not found in activity_main.xml");
+            }
         } else {
-            throw new IllegalStateException("NavHostFragment not found in activity_main.xml");
+            SharedPreferences preferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("role", role);
+            editor.apply();
+
+            setContentView(R.layout.activity_main_staff);
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_staff);
+
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.nav_host_fragment_staff);
+
+            if (navHostFragment != null) {
+                navController = navHostFragment.getNavController();
+                NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            } else {
+                throw new IllegalStateException("NavHostFragment not found in activity_main.xml");
+            }
         }
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, (AppBarConfiguration) null) || super.onSupportNavigateUp();
